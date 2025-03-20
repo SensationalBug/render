@@ -6,22 +6,19 @@ ENV N8N_PORT=3000 \
     NODE_ENV=production \
     N8N_DIAGNOSTICS_ENABLED=false \
     WEBHOOK_URL=https://render-a37d.onrender.com/ \
-    GENERIC_TIMEZONE=UTC
+    GENERIC_TIMEZONE=UTC \
+    DB_TYPE=sqlite
 
 # For security (change these in Render's environment variables)
-ENV N8N_ENCRYPTION_KEY=aaaaaaaaaaaaaaaaaaaaaaaa \
-    N8N_JWT_SECRET=aaaaaaaaaaaaaaaaaaaaaaaa
+ENV N8N_ENCRYPTION_KEY=change-me-please \
+    N8N_JWT_SECRET=change-me-please
 
-# Configure database (these should be set in Render's environment variables)
-ENV DB_TYPE=postgresdb \
-DB_POSTGRESDB_HOST=your-postgres-host \
-DB_POSTGRESDB_PORT=5432 \
-DB_POSTGRESDB_DATABASE=n8n \
-DB_POSTGRESDB_USER=n8n \
-DB_POSTGRESDB_PASSWORD=n8n
+# Using SQLite as the default database
+# The database file will be stored in /home/node/.n8n directory
 
 # Create directory for n8n storage
-RUN mkdir -p /home/node/.n8n
+RUN mkdir -p /home/node/.n8n && \
+    chown -R node:node /home/node/.n8n
 
 # Expose the port n8n runs on
 EXPOSE 3000
