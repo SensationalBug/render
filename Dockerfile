@@ -7,24 +7,31 @@ ENV N8N_PORT=3000 \
     N8N_DIAGNOSTICS_ENABLED=false \
     WEBHOOK_URL=https://render-a37d.onrender.com/ \
     GENERIC_TIMEZONE=UTC \
-    DB_TYPE=sqlite
-
-# For security (change these in Render's environment variables)
-ENV N8N_ENCRYPTION_KEY=change-me-please \
+    DB_TYPE=sqlite \
+    N8N_ENCRYPTION_KEY=change-me-please \
     N8N_JWT_SECRET=change-me-please
 
-# Using SQLite as the default database
-# The database file will be stored in /home/node/.n8n directory
+# Install OCR tools
+USER root
 
-# Create directory for n8n storage
+RUN apt-get update && apt-get install -y \
+    poppler-utils \        # pdftotext, pdftoppm
+    tesseract-ocr \        # OCR engine
+    tesseract-ocr-spa \    # Spanish language support (optional)
+    imagemagick \          # image conversion/manipulation
+    && rm -rf /var/lib/apt/lists/*
+
+# Create n8n storage directory with correct permissions
 RUN mkdir -p /home/node/.n8n && \
     chown -R node:node /home/node/.n8n
 
-# Expose the port n8n runs on
-EXPOSE 3000
+USER node
 
 # Set working directory
 WORKDIR /home/node/.n8n
+
+# Expose the port
+EXPOSE 3000
 
 # Start n8n
 ENTRYPOINT ["tini", "--"]
