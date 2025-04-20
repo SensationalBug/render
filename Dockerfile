@@ -15,8 +15,8 @@ ENV N8N_PORT=3000 \
 USER root
 
 RUN apt-get update && apt-get install -y \
-    poppler-utils \        # pdftotext, pdftoppm
-    imagemagick            # image conversion/manipulation
+    poppler-utils        # pdftotext, pdftoppm
+
 
 # Create n8n storage directory with correct permissions
 RUN mkdir -p /home/node/.n8n && \
