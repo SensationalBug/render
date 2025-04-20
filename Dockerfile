@@ -16,8 +16,6 @@ USER root
 
 RUN apt-get update && apt-get install -y \
     poppler-utils \        # pdftotext, pdftoppm
-    tesseract-ocr \        # OCR engine
-    tesseract-ocr-spa \    # Spanish language support (optional)
     imagemagick            # image conversion/manipulation
 
 # Create n8n storage directory with correct permissions
